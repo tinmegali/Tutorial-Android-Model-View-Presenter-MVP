@@ -1,3 +1,9 @@
+<h1>Android-Model-View-Presenter-MVP Tutorial</h1>
+<strong>Part of tutorial <a href="http://www.tinmegali.com/model-view-presenter-mvp-no-android-parte-2/">Model View Presenter (MVP) no Android</a>.</strong>
+
+Simplified implementation of Model View Presenter pattern in Android. <br />
+<br/>
+<br/>
 <h1>Tutorial-Android-Model-View-Presenter-MVP</h1>
 
 Implementação simplificada do padrão <strong>Model View Presenter (MVP)</strong> no ambiente Android. <br />
