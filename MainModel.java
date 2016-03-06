@@ -2,7 +2,7 @@ package com.tinmegali.mvp_tutorial;
 
 import android.util.Log;
 
-import com.tinmegali.mvp_tutorial.modelos.Nota;
+import com.tinmegali.mvp_tutorial.modelos.Note;
 
 /**
  * ---------------------------------------------------
@@ -18,6 +18,7 @@ public class MainModel
 
     private String TAG = getClass().getSimpleName();
 
+    // Presenter reference
     // Referência para layer Presenter
     private MainMVP.RequiredPresenterOps mPresenter;
 
@@ -26,6 +27,10 @@ public class MainModel
     }
 
     /**
+     * Sent from {@link MainPresenter#onDestroy(boolean)}
+     * Should stop/kill operations that could be running
+     * and aren't needed anymore
+     *
      * Disparada por {@link MainPresenter#onDestroy(boolean)}
      * para as operações necessárias que eventualmente
      * estiverem executando no BG
@@ -33,24 +38,26 @@ public class MainModel
     @Override
     public void onDestroy() {
         Log.d(TAG, "startMVPOps()");
-        // ações para destruir objeto
+        // destroying actions
     }
 
+    // Insert Note in DB
     // insere Nota no DB
     @Override
-    public void insereNota(Nota nota) {
+    public void insertNote(Note note) {
         Log.d(TAG, "startMVPOps()");
-        // lógica de inserção
+        // data business logic
         // ...
-        mPresenter.onNotaInserida(nota);
+        mPresenter.onNoteInserted(note);
     }
 
+    // Removes Note from DB
     // remove Nota do DB
     @Override
-    public void removeNota(Nota nota) {
+    public void removeNote(Note note) {
         Log.d(TAG, "startMVPOps()");
-        // lógica de remoção
+        // data business logic
         // ...
-        mPresenter.onNotaRemovida(nota);
+        mPresenter.onNoteRemoved(note);
     }
 }

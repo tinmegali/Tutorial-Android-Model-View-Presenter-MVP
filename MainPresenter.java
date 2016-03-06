@@ -2,7 +2,7 @@ package com.tinmegali.mvp_tutorial;
 
 import android.util.Log;
 
-import com.tinmegali.mvp_tutorial.modelos.Nota;
+import com.tinmegali.mvp_tutorial.modelos.Note;
 
 import java.lang.ref.WeakReference;
 import java.text.SimpleDateFormat;
@@ -23,11 +23,15 @@ public class MainPresenter
 
     private String TAG = getClass().getSimpleName();
 
+    // Layer View reference
     // Referência para layer View
     private WeakReference<MainMVP.RequiredViewOps> mView;
+
+    // Layer Model reference
     // Referência para o layer Model
     private MainMVP.ModelOps mModel;
 
+    // Configuration change state
     // Estado da mudança de configuração
     private boolean mIsChangingConfig;
 
@@ -38,8 +42,11 @@ public class MainPresenter
     }
 
     /**
+     * Sent from Activity after a configuration changes
+     *
      * Disparado por Activity após mudança de configuração
-     * @param view  Referência para View
+     *
+     * @param view  View reference
      */
     @Override
     public void onConfigurationChanged(MainMVP.RequiredViewOps view) {
@@ -49,6 +56,9 @@ public class MainPresenter
     }
 
     /**
+     * Receives {@link MainActivity#onDestroy()} event
+     * @param isChangingConfig  Config change state
+     *
      * Recebe evento {@link MainActivity#onDestroy()}
      * @param isChangingConfig  Se está mudando de config
      */
@@ -64,52 +74,65 @@ public class MainPresenter
 
 
     /**
+     * Called by user interaction from {@link MainActivity}
+     * creates a new Note
+     *
      * Chamado por {@link MainActivity} com a
      * interação do usuário de pedido para inserção de
      * nova nota
      */
     @Override
-    public void novaNota(String textoNota) {
-        Log.d(TAG, "novaNota()");
-        Nota nota = new Nota();
-        nota.setText(textoNota);
-        nota.setDate(getDate());
-        mModel.insereNota(nota);
+    public void newNote(String noteText) {
+        Log.d(TAG, "newNote()");
+        Note note = new Note();
+        note.setText(noteText);
+        note.setDate(getDate());
+        mModel.insertNote(note);
     }
 
     /**
+     * Called from {@link MainActivity},
+     * Removes a Note
+     *
      * Chamado por {@link MainActivity}, pedido
      * para remoção de nota
      */
     @Override
-    public void deletaNota(Nota nota) {
-        Log.d(TAG, "deletaNota()");
-        mModel.removeNota(nota);
+    public void deleteNote(Note note) {
+        Log.d(TAG, "deleteNote()");
+        mModel.removeNote(note);
     }
 
     /**
+     * Called from {@link MainModel}
+     * when a Note is inserted successfully
+     *
      * Recebe chamado de {@link MainModel} quando
      * Nota for inserida com sucesso no DB
      */
     @Override
-    public void onNotaInserida(Nota novaNota) {
-        Log.d(TAG, "onNotaInserida()");
-        mView.get().showToast("Novo registro " + novaNota.getDate());
+    public void onNoteInserted(Note novaNote) {
+        Log.d(TAG, "onNoteInserted()");
+        mView.get().showToast("New " + novaNote.getDate());
     }
 
     /**
+     * Receives call from {@link MainModel}
+     * when Note is removed
+     *
      * Recebe chamado de {@link MainModel} quando
      * Nota for removida do DB
      */
     @Override
-    public void onNotaRemovida(Nota notaRemovida) {
-        Log.d(TAG, "onNotaRemovida()");
-        mView.get().showToast("Nota de " + notaRemovida.getDate() + " removida");
+    public void onNoteRemoved(Note removedNote) {
+        Log.d(TAG, "onNoteRemoved()");
+        mView.get().showToast("Note " + removedNote.getDate() + " removed");
     }
 
     /**
-     * Recebe eventuais error de modelo,
-     * e repassa mensagem para usuário
+     * receive errors
+     *
+     * Recebe erros
      */
     @Override
     public void onError(String errorMsg) {
@@ -119,6 +142,8 @@ public class MainPresenter
 
 
     /**
+     * Returns current date
+     *
      * Retorna data atual
      */
     private String getDate(){
@@ -126,11 +151,11 @@ public class MainPresenter
         return new SimpleDateFormat("EEEE, dd/MM, kk:mm", Locale.getDefault()).format(new Date());
     }
 
-    private Nota criaNota(String notaText){
-        Log.d(TAG, "criaNota()");
-        Nota nota = new Nota();
-        nota.setText(notaText);
-        nota.setDate( getDate() );
-        return nota;
+    private Note getNote(String noteText){
+        Log.d(TAG, "getNote()");
+        Note note = new Note();
+        note.setText(noteText);
+        note.setDate( getDate() );
+        return note;
     }
 }

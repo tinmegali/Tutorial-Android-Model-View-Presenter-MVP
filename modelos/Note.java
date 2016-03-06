@@ -10,12 +10,12 @@ package com.tinmegali.mvp_tutorial.modelos;
  * ---------------------------------------------------
  *
  */
-public class Nota {
+public class Note {
 
     private String text;
     private String date;
 
-    public Nota() {
+    public Note() {
     }
 
     public void setDate(String date) {
